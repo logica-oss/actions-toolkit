@@ -18,6 +18,11 @@ merge_protections:
     success_conditions:
       - "approved-reviews-by = coderabbitai[bot]"
       - "approved-reviews-by = @logica-oss/admin"
+  - name: "Allow renovate"
+    if:
+      - "base = main"
+      - "author = renovate[bot]"
+    success_conditions: []
 
 pull_request_rules:
   - name: "Request admin review once CodeRabbit approved"
