@@ -199,9 +199,9 @@ steps:
 
 #### Outputs
 
-| Output | Description                                     |
-| ------ | ----------------------------------------------- |
-| `tag`  | Created tag, empty when no release was created. |
+| Output | Description                                 |
+| ------ | ------------------------------------------- |
+| `tag`  | Created tag, empty when no tag was created. |
 
 ### sync-agent-config
 

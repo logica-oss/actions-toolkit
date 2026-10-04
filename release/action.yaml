@@ -21,7 +21,7 @@ inputs:
 
 outputs:
   tag:
-    description: Created tag, empty when no release was created.
+    description: Created tag, empty when no tag was created.
     value: ${{ steps.create.outputs.tag }}
 
 runs:
