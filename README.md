@@ -120,7 +120,7 @@ jobs:
 
 ### release
 
-Creates a SemVer tag and GitHub Release from merged PR labels.  
+Creates a SemVer tag and optionally a GitHub Release from merged PR labels.  
 Requires the `contents: write` and `pull-requests: read` permissions.
 
 ```yaml
@@ -152,25 +152,56 @@ jobs:
           initial-version: v1.0.0 # defaults to v1.0.0
           major-label: major # defaults to major
           minor-label: minor # defaults to minor
+          create-release: "true" # defaults to "true"
 ```
 
 The `minor` label triggers a minor release.  
 The `major` label triggers a major release.  
 PRs without either label default to a patch release.
 
+Set `create-release` to `"false"` to create only the tag and let another tool (e.g. GoReleaser) create the release in the same job.  
+The next tag is computed from the latest GitHub Release, so the tool must create the Release in the same job.  
+Fetch the created tag before running the tool so it can resolve the version from git.
+
+```yaml
+steps:
+  - name: Checkout
+    uses: actions/checkout@v7
+    with:
+      fetch-depth: 0
+  - name: Create tag
+    id: release
+    uses: logica-oss/actions-toolkit/release@main
+    with:
+      create-release: "false"
+  - name: Fetch created tag
+    if: steps.release.outputs.tag != ''
+    run: git fetch origin ${{ steps.release.outputs.tag }}
+    shell: bash
+  - name: Run GoReleaser
+    if: steps.release.outputs.tag != ''
+    uses: goreleaser/goreleaser-action@v6
+    with:
+      version: latest
+      args: release --clean
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+```
+
 #### Inputs
 
-| Input             | Required | Default  | Description                                 |
-| ----------------- | -------- | -------- | ------------------------------------------- |
-| `initial-version` | —        | `v1.0.0` | Tag created when no previous release exists |
-| `major-label`     | —        | `major`  | Label triggering a major release            |
-| `minor-label`     | —        | `minor`  | Label triggering a minor release            |
+| Input             | Required | Default  | Description                                                         |
+| ----------------- | -------- | -------- | ------------------------------------------------------------------- |
+| `initial-version` | —        | `v1.0.0` | Tag created when no previous release exists                         |
+| `major-label`     | —        | `major`  | Label triggering a major release                                    |
+| `minor-label`     | —        | `minor`  | Label triggering a minor release                                    |
+| `create-release`  | —        | `true`   | Whether to create a GitHub Release (`"false"` creates only the tag) |
 
 #### Outputs
 
-| Output | Description                                     |
-| ------ | ----------------------------------------------- |
-| `tag`  | Created tag, empty when no release was created. |
+| Output | Description                                 |
+| ------ | ------------------------------------------- |
+| `tag`  | Created tag, empty when no tag was created. |
 
 ### sync-agent-config
 

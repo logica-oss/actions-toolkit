@@ -1,5 +1,5 @@
 name: Release
-description: Create a SemVer tag and GitHub Release from merged PR labels.
+description: Create a SemVer tag and optionally a GitHub Release from merged PR labels.
 
 inputs:
   initial-version:
@@ -14,10 +14,14 @@ inputs:
     description: Label triggering a minor release.
     required: false
     default: "minor"
+  create-release:
+    description: Whether to create a GitHub Release. Set to false when creating the release with another tool.
+    required: false
+    default: "true"
 
 outputs:
   tag:
-    description: Created tag, empty when no release was created.
+    description: Created tag, empty when no tag was created.
     value: ${{ steps.create.outputs.tag }}
 
 runs:
@@ -90,20 +94,16 @@ runs:
 
           core.setOutput("tag", `v${next.join(".")}`);
 
-    - name: Create tag and release
+    - name: Create tag
       id: create
+      if: steps.determine.outputs.tag != ''
       uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
       env:
         TAG: ${{ steps.determine.outputs.tag }}
       with:
         script: |
           const { owner, repo } = context.repo;
-
           const tag = process.env.TAG;
-          if (!tag) {
-            console.log("No changes since the last release.");
-            return;
-          }
 
           try {
             await github.rest.git.createRef({
@@ -126,11 +126,20 @@ runs:
             }
           }
 
+          core.setOutput("tag", tag);
+
+    - name: Create release
+      if: inputs.create-release != 'false' && steps.create.outputs.tag != ''
+      uses: actions/github-script@3a2844b7e9c422d3c10d287c895573f7108da1b3 # v9.0.0
+      env:
+        TAG: ${{ steps.create.outputs.tag }}
+      with:
+        script: |
+          const { owner, repo } = context.repo;
+
           await github.rest.repos.createRelease({
             owner,
             repo,
-            tag_name: tag,
+            tag_name: process.env.TAG,
             generate_release_notes: true,
           });
-
-          core.setOutput("tag", tag);
