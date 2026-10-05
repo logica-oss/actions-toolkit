@@ -60,7 +60,10 @@ runs:
             throw new Error(`Latest release tag ${baseTag} is not SemVer.`);
           }
 
-          const baseDate = new Date(releases[0].created_at);
+          // created_at follows the tag commit time, so use the publish time as the baseline.
+          const baseDate = new Date(
+            releases[0].published_at || releases[0].created_at,
+          );
           const mergedPulls = await github.paginate(
             github.rest.search.issuesAndPullRequests,
             {
