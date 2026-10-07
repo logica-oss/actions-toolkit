@@ -73,10 +73,11 @@ jobs:
 
 #### Inputs
 
-| Input             | Required | Default | Description                          |
-| ----------------- | -------- | ------- | ------------------------------------ |
-| `workflow-id`     | ✅       | —       | Workflow file name or ID to wait for |
-| `timeout-minutes` | —        | `10`    | Maximum time to wait in minutes      |
+| Input                   | Required | Default | Description                          |
+| ----------------------- | -------- | ------- | ------------------------------------ |
+| `workflow-id`           | ✅       | —       | Workflow file name or ID to wait for |
+| `timeout-minutes`       | —        | `10`    | Maximum time to wait in minutes      |
+| `poll-interval-seconds` | —        | `30`    | Seconds between status checks.       |
 
 ### check-release-label
 

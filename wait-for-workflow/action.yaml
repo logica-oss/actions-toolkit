@@ -9,6 +9,10 @@ inputs:
     description: Maximum time to wait in minutes.
     required: false
     default: "10"
+  poll-interval-seconds:
+    description: Seconds between status checks.
+    required: false
+    default: "30"
 
 runs:
   using: composite
@@ -18,6 +22,7 @@ runs:
       env:
         WAIT_WORKFLOW_ID: ${{ inputs.workflow-id }}
         WAIT_TIMEOUT_MINUTES: ${{ inputs.timeout-minutes }}
+        WAIT_POLL_INTERVAL_SECONDS: ${{ inputs.poll-interval-seconds }}
       with:
         script: |
           const workflowId = process.env.WAIT_WORKFLOW_ID;
@@ -25,8 +30,8 @@ runs:
           const { owner, repo } = context.repo;
 
           const startedAt = Date.now();
-          const timeoutMinutes = Number(process.env.WAIT_TIMEOUT_MINUTES);
-          const timeoutMs = timeoutMinutes * 60 * 1000;
+          const timeoutMs = Number(process.env.WAIT_TIMEOUT_MINUTES) * 60 * 1000;
+          const pollIntervalMs = Number(process.env.WAIT_POLL_INTERVAL_SECONDS) * 1000;
 
           for (;;) {
             const { data } = await github.rest.actions.listWorkflowRuns({
@@ -52,5 +57,5 @@ runs:
               throw new Error(`Timed out waiting for the "${workflowId}" workflow to complete.`);
             }
 
-            await new Promise((resolve) => setTimeout(resolve, 10_000));
+            await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
           }
