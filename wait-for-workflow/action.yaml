@@ -32,8 +32,15 @@ runs:
           const startedAt = Date.now();
           const timeoutMs = Number(process.env.WAIT_TIMEOUT_MINUTES) * 60 * 1000;
           const pollIntervalMs = Number(process.env.WAIT_POLL_INTERVAL_SECONDS) * 1000;
+          if (!Number.isFinite(pollIntervalMs) || pollIntervalMs < 1 || pollIntervalMs > 2_147_483_647) {
+            throw new Error(`poll-interval-seconds must resolve to a delay between 1 and 2147483647 ms, but got ${process.env.WAIT_POLL_INTERVAL_SECONDS}.`);
+          }
 
           for (;;) {
+            if (Date.now() - startedAt >= timeoutMs) {
+              throw new Error(`Timed out waiting for the "${workflowId}" workflow to complete.`);
+            }
+
             const { data } = await github.rest.actions.listWorkflowRuns({
               owner,
               repo,
@@ -53,9 +60,6 @@ runs:
               break;
             }
 
-            if (Date.now() - startedAt >= timeoutMs) {
-              throw new Error(`Timed out waiting for the "${workflowId}" workflow to complete.`);
-            }
-
-            await new Promise((resolve) => setTimeout(resolve, pollIntervalMs));
+            const remainingMs = timeoutMs - (Date.now() - startedAt);
+            await new Promise((resolve) => setTimeout(resolve, Math.min(pollIntervalMs, remainingMs)));
           }
