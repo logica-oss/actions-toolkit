@@ -32,8 +32,8 @@ runs:
           const startedAt = Date.now();
           const timeoutMs = Number(process.env.WAIT_TIMEOUT_MINUTES) * 60 * 1000;
           const pollIntervalMs = Number(process.env.WAIT_POLL_INTERVAL_SECONDS) * 1000;
-          if (!Number.isFinite(pollIntervalMs) || pollIntervalMs < 1 || pollIntervalMs > 2_147_483_647) {
-            throw new Error(`poll-interval-seconds must resolve to a delay between 1 and 2147483647 ms, but got ${process.env.WAIT_POLL_INTERVAL_SECONDS}.`);
+          if (!Number.isFinite(pollIntervalMs) || pollIntervalMs < 1_000 || pollIntervalMs > 2_147_483_647) {
+            throw new Error(`poll-interval-seconds must be between 1 and 2147483.647, but got ${process.env.WAIT_POLL_INTERVAL_SECONDS}.`);
           }
 
           for (;;) {
