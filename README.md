@@ -77,7 +77,7 @@ jobs:
 | ----------------------- | -------- | ------- | -------------------------------------------------------------------- |
 | `workflow-id`           | ✅       | —       | Workflow file name or ID to wait for                                 |
 | `timeout-minutes`       | —        | `10`    | Maximum time to wait in minutes                                      |
-| `poll-interval-seconds` | —        | `30`    | Seconds between status checks. Must resolve to 1–2147483.647 seconds |
+| `poll-interval-seconds` | —        | `30`    | Seconds between status checks. Must resolve to 1-2147483.647 seconds |
 
 ### check-release-label
 
