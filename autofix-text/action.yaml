@@ -26,7 +26,7 @@ runs:
         globs: ${{ inputs.markdown-globs }}
     - name: Format with Oxfmt
       env:
-        OXFMT_VERSION: "0.71.0"
+        OXFMT_VERSION: "0.72.0"
         OXFMT_PATHS: ${{ inputs.oxfmt-paths }}
       run: |
         set -o noglob
