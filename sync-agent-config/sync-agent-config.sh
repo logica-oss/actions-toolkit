@@ -25,7 +25,7 @@ sync_project_wide() {
     echo "<!-- DO NOT EDIT: Generated mirror of /$src. Edit /$src instead. -->"
     echo ""
     cat "$src"
-  } >"$dest"
+  } > "$dest"
 
   echo "sync-agent-config: synced $dest"
 }
@@ -52,7 +52,7 @@ sync_path_specific() {
       if [[ -n "$apply_to" ]]; then
         echo "---"
         echo "paths:"
-        IFS="," read -ra GLOBS <<<"$apply_to"
+        IFS="," read -ra GLOBS <<< "$apply_to"
         for glob in "${GLOBS[@]}"; do
           glob="$(echo "$glob" | sed -E 's/^[[:space:]]+//;s/[[:space:]]+$//')"
           [[ -n "$glob" ]] && echo "  - \"$glob\""
@@ -63,7 +63,7 @@ sync_path_specific() {
       echo "<!-- DO NOT EDIT: Generated from /$rel_src. Edit /$rel_src instead. -->"
       echo ""
       print_body "$src"
-    } >"$dest"
+    } > "$dest"
 
     echo "sync-agent-config: synced $dest"
   done < <(find "$src_dir" -maxdepth 1 -name "*.instructions.md" -print0)
@@ -87,8 +87,8 @@ sync_skills() {
     while IFS= read -r -d "" link; do
       target="$(realpath -m "$link")"
       case "$target" in
-      "$REPO_ROOT/$src_dir/"*) ;;
-      *) fail "symlink escapes $src_dir: $link" ;;
+        "$REPO_ROOT/$src_dir/"*) ;;
+        *) fail "symlink escapes $src_dir: $link" ;;
       esac
     done < <(find "$src_skill" -type l -print0)
 
@@ -104,7 +104,7 @@ sync_skills() {
         echo "<!-- DO NOT EDIT: Generated from /$src_dir/$name. Edit /$src_dir/$name instead. -->"
         echo ""
         print_body "$src_skill/SKILL.md"
-      } >"$dest_skill/SKILL.md"
+      } > "$dest_skill/SKILL.md"
     fi
 
     echo "sync-agent-config: synced $dest_skill"

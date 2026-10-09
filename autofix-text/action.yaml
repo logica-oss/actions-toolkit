@@ -38,7 +38,7 @@ runs:
       uses: mfinelli/setup-shfmt@a25fda4c1fe115aec0f85e04126610841bc3141d # v4.0.1
     - name: Format Shell with shfmt
       if: inputs.enable-shfmt == 'true'
-      run: shfmt -w -i 2 .
+      run: shfmt -w -i 2 -ci -sr .
       shell: bash
     - name: Commit changes
       uses: autofix-ci/action@c5b2d67aa2274e7b5a18224e8171550871fc7e4a # v1.3.4
