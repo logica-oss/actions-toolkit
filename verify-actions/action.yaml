@@ -1,13 +1,13 @@
 name: Verify Actions
-description: Lint GitHub Actions workflows and composite actions with actionlint, ghalint, and zizmor.
+description: Lint GitHub Actions workflows and composite actions with jactionlint, ghalint, and zizmor.
 
 runs:
   using: composite
   steps:
-    - name: Run actionlint
-      uses: reviewdog/action-actionlint@1758727be30241166609dad4c97588b6ad411f32 # v1.79.1
+    - name: Run jactionlint
+      uses: jdx/jactionlint@2462f925040c2aa1c88714dc85bc12d869cc4998 # v2.0.2
       with:
-        fail_level: error
+        profile: default
     - name: Install ghalint
       id: install
       env:

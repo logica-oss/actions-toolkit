@@ -31,6 +31,7 @@ runs:
       run: |
         set -o noglob
         [[ -n "${OXFMT_PATHS//[[:space:]]/}" ]] || exit 0
+        # shellcheck disable=SC2086 # noglob is set above, so this only word-splits
         npx --yes "oxfmt@${OXFMT_VERSION}" --write --no-error-on-unmatched-pattern $OXFMT_PATHS
       shell: bash
     - name: Setup shfmt

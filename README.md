@@ -11,7 +11,7 @@ A collection of composite actions
 
 ### verify-actions
 
-Lints GitHub Actions (workflows / composite actions) with actionlint, ghalint, and zizmor.  
+Lints GitHub Actions (workflows / composite actions) with jactionlint, ghalint, and zizmor.  
 Requires the `contents: read` and `checks: write` permissions.
 
 ```yaml

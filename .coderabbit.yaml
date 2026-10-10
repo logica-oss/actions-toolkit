@@ -19,7 +19,5 @@ reviews:
   path_instructions:
     - path: "release/action.yaml"
       instructions: "Accept by design (do not report): single main branch operation with date-based PR detection, fixed main branch, and listReleases lookup. Tag-only mode requires same-job Release creation; baseline advances only after a Release exists."
-    - path: ".github/workflows/**"
-      instructions: "Accept by design (do not report): $/ is valid self-repository syntax; actionlint lacks support (rhysd/actionlint#711)."
     - path: "sync-agent-config/sync-agent-config.sh"
       instructions: "Accept by design (do not report): applyTo parsing supports double-quoted single-line values with simple comma split only. Single quotes, trailing comments, CR handling, brace-aware splitting, and backslash escaping are intentionally unsupported for simplicity."

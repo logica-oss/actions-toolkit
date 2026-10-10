@@ -1,6 +1,0 @@
-# actionlint lacks $/ support (https://github.com/rhysd/actionlint/issues/711); remove when fixed.
-paths:
-  .github/workflows/**/*.{yml,yaml}:
-    ignore:
-      - "reusable workflow call \"\\$/[^\"@]+\" at \"uses\" is not following the format.*"
-      - "specifying action \"\\$/[^\"@]+\" in invalid format because ref is missing.*"
