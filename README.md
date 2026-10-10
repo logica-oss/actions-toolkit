@@ -12,7 +12,7 @@ A collection of composite actions
 ### verify-actions
 
 Lints GitHub Actions (workflows / composite actions) with jactionlint, ghalint, and zizmor.  
-Requires the `contents: read` and `checks: write` permissions.
+Requires the `contents: read` permission.
 
 ```yaml
 jobs:
@@ -21,7 +21,6 @@ jobs:
     timeout-minutes: 20
     permissions:
       contents: read
-      checks: write
     steps:
       - name: Checkout
         uses: actions/checkout@v7
