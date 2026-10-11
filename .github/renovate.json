@@ -7,6 +7,13 @@
   "minimumReleaseAge": "3 days",
   "rebaseWhen": "conflicted",
   "gitIgnoredAuthors": ["114827586+autofix-ci[bot]@users.noreply.github.com"],
+  "packageRules": [
+    {
+      "description": "Release when a shipped composite action changes",
+      "matchFileNames": ["**/action.yaml"],
+      "addLabels": ["patch"]
+    }
+  ],
   "customManagers": [
     {
       "description": "Track the pinned ghalint version in verify-actions/action.yaml",
