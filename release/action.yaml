@@ -14,6 +14,10 @@ inputs:
     description: Label triggering a minor release.
     required: false
     default: "minor"
+  patch-label:
+    description: Label triggering a patch release.
+    required: false
+    default: "patch"
   create-release:
     description: Whether to create a GitHub Release. Set to false when creating the release with another tool.
     required: false
@@ -34,11 +38,13 @@ runs:
         INITIAL_VERSION: ${{ inputs.initial-version }}
         MAJOR_LABEL: ${{ inputs.major-label }}
         MINOR_LABEL: ${{ inputs.minor-label }}
+        PATCH_LABEL: ${{ inputs.patch-label }}
       with:
         script: |
           const { owner, repo } = context.repo;
           const majorLabel = process.env.MAJOR_LABEL;
           const minorLabel = process.env.MINOR_LABEL;
+          const patchLabel = process.env.PATCH_LABEL;
 
           const { data: releases } = await github.rest.repos.listReleases({
             owner,
@@ -76,7 +82,7 @@ runs:
             return;
           }
 
-          let bump = "patch";
+          let bump = null;
           for (const pull of mergedPulls) {
             const labels = pull.labels.map((label) => label.name);
             if (labels.includes(majorLabel)) {
@@ -85,7 +91,16 @@ runs:
             }
             if (labels.includes(minorLabel)) {
               bump = "minor";
+              continue;
             }
+            if (labels.includes(patchLabel)) {
+              bump ??= "patch";
+            }
+          }
+
+          if (bump === null) {
+            core.setOutput("tag", "");
+            return;
           }
 
           const [major, minor, patch] = match.slice(1, 4).map(Number);
