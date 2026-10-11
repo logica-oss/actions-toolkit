@@ -159,7 +159,7 @@ jobs:
 The `patch` label triggers a patch release.  
 The `minor` label triggers a minor release.  
 The `major` label triggers a major release.  
-PRs without any of these labels do not trigger a release.
+PRs without any of these labels do not trigger a release after the initial bootstrap release.
 
 Set `create-release` to `"false"` to create only the tag and let another tool (e.g. GoReleaser) create the release in the same job.  
 The next tag is computed from the latest GitHub Release, so the tool must create the Release in the same job.  
