@@ -7,6 +7,7 @@ on:
 concurrency:
   group: check-release-label-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 jobs:
   check-release-label:

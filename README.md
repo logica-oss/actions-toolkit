@@ -91,12 +91,12 @@ on:
   pull_request:
     types: [opened, labeled, unlabeled, synchronize, reopened, ready_for_review]
 
-# opened and labeled fire seconds apart on the same ref (e.g. Renovate
-# auto-labels), so queue instead of cancelling to avoid leaving a cancelled
-# required check.
+# `opened` and `labeled` can fire within seconds of each other for the same ref.
+# Queue runs instead of cancelling to avoid leaving a required check cancelled.
 concurrency:
   group: check-release-label-${{ github.ref }}
   cancel-in-progress: false
+  queue: max
 
 jobs:
   check-release-label:
