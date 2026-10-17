@@ -134,11 +134,21 @@ runs:
             if (error.status !== 422) {
               throw error;
             }
-            const { data: existing } = await github.rest.git.getRef({
-              owner,
-              repo,
-              ref: `tags/${tag}`,
-            });
+
+            let existing;
+            try {
+              ({ data: existing } = await github.rest.git.getRef({
+                owner,
+                repo,
+                ref: `tags/${tag}`,
+              }));
+            } catch (getError) {
+              if (getError.status === 404) {
+                throw error;
+              }
+              throw getError;
+            }
+
             if (existing.object.sha !== context.sha) {
               throw new Error(`Tag ${tag} already points to ${existing.object.sha}.`);
             }
