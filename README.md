@@ -82,7 +82,7 @@ jobs:
 
 Fails unless exactly one of the patch, minor, or major release labels is attached.  
 Draft pull requests are skipped.  
-Requires the `pull-requests: read` permission.
+No special permissions are required.
 
 ```yaml
 name: Verify (Release Label)
@@ -102,8 +102,7 @@ jobs:
   check-release-label:
     runs-on: ubuntu-latest
     timeout-minutes: 5
-    permissions:
-      pull-requests: read
+    permissions: {}
     steps:
       - name: Check release label
         uses: logica-oss/actions-toolkit/check-release-label@main
