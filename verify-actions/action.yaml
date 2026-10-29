@@ -12,7 +12,7 @@ runs:
       id: install
       env:
         GH_TOKEN: ${{ github.token }}
-        GHALINT_VERSION: "v1.5.6"
+        GHALINT_VERSION: "v1.5.7"
       run: |
         set -eu -o pipefail
 
