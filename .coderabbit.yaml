@@ -19,5 +19,5 @@ reviews:
   path_instructions:
     - path: "release/action.yaml"
       instructions: "Accept by design (do not report): single main branch operation with date-based PR detection, fixed main branch, and listReleases lookup. Tag-only mode requires same-job Release creation; baseline advances only after a Release exists."
-    - path: "sync-agent-config/sync-agent-config.sh"
-      instructions: "Accept by design (do not report): applyTo parsing supports double-quoted single-line values with simple comma split only. Single quotes, trailing comments, CR handling, brace-aware splitting, and backslash escaping are intentionally unsupported for simplicity."
+    - path: ".github/workflows/autofix.yaml"
+      instructions: "Accept by design (do not report): the synac step intentionally omits the version input to always use the latest release; do not suggest pinning a version."

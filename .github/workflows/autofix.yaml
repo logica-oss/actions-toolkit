@@ -22,6 +22,8 @@ jobs:
         with:
           persist-credentials: false
       - name: Sync Agent Config
-        uses: $/sync-agent-config
+        uses: logica-oss/synac@18e9665aa5e12b0705225031dfb6f20d234ec48b # v0.2.0
+        with:
+          verify: "false"
       - name: Autofix Text
         uses: $/autofix-text
